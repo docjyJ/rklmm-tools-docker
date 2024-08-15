@@ -41,7 +41,17 @@ class HuggingfaceConvertor:
         rmtree(self._directory)
 
 def main():
-    parser = ArgumentParser()
+    parser = ArgumentParser(
+        description='''
+        Convert Huggingface model to RKLLM model.
+        
+        Example: toolkit microsoft/Phi-3-mini-4k-instruct
+        ''',
+        epilog='''
+        This program under the AGPL-3.0 license.
+        Copyright (C) 2024 docjyJ
+        '''
+    )
     parser.add_argument('-o', '--output', help='output model file', metavar='MODEL_FILE', type=str)
     parser.add_argument('--device', choices=['cpu', 'cuda'], default='cpu', help='device type', metavar='DEVICE', type=str)
     parser.add_argument('--no-quantization', action='store_true', help='disable quantization')
