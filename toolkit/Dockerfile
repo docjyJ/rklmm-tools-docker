@@ -1,4 +1,4 @@
-FROM --platforms=linux/amd64 python:3.8-bookworm-slim
+FROM --platform=linux/amd64 python:3.8-bookworm-slim
 
 RUN apt update && apt install -y git && git lfs install
 
