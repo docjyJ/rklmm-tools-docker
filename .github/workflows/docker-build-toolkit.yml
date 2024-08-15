@@ -6,8 +6,6 @@ on:
       - 'main'
     tags:
       - 'v*'
-    paths:
-      - '/toolkit/*'
   pull_request:
     branches:
       - 'main'
