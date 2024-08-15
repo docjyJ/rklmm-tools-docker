@@ -7,7 +7,7 @@ COPY rkllm_toolkit-1.0.1-cp38-cp38-linux_x86_64.whl /tmp/rkllm_toolkit-1.0.1-cp3
 RUN pip install --no-cache-dir /tmp/rkllm_toolkit-1.0.1-cp38-cp38-linux_x86_64.whl && \
     rm /tmp/rkllm_toolkit-1.0.1-cp38-cp38-linux_x86_64.whl
 
-COPY toolkit /bin/toolkit
+COPY toolkit.py /bin/rkllm-toolkit
 
-ENTRYPOINT ["/bin/toolkit"]
+ENTRYPOINT ["/bin/rkllm-toolkit"]
 

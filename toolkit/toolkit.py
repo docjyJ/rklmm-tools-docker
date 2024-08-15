@@ -24,8 +24,11 @@ class HuggingfaceConvertor:
     def load_model(self, device: Literal['cpu', 'cuda'] = 'cpu') -> bool:
         return self._builder.load_huggingface(self._directory, device=device) == 0
 
-    def build_model(self, disable_quantization: bool = False, disable_optimization: bool = False, quantized_dtype: str = 'w8a8', target_platform: Literal['rk3576', 'rk3588'] = 'rk3588') -> bool:
-        return self._builder.build(do_quantization=not disable_quantization, optimization_level=not disable_optimization, quantized_dtype=quantized_dtype, target_platform=target_platform) == 0
+    def build_model(self, disable_quantization: bool = False, disable_optimization: bool = False,
+                    quantized_dtype: str = 'w8a8', target_platform: Literal['rk3576', 'rk3588'] = 'rk3588') -> bool:
+        return self._builder.build(do_quantization=not disable_quantization,
+                                   optimization_level=not disable_optimization, quantized_dtype=quantized_dtype,
+                                   target_platform=target_platform) == 0
 
     def export_model(self, output: Optional[str] = None) -> bool:
         if output is None:
@@ -33,12 +36,12 @@ class HuggingfaceConvertor:
 
         return self._builder.export_rkllm(abspath(output)) == 0
 
-
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
         rmtree(self._directory)
+
 
 def main():
     parser = ArgumentParser(
@@ -53,11 +56,13 @@ def main():
         '''
     )
     parser.add_argument('-o', '--output', help='output model file', metavar='MODEL_FILE', type=str)
-    parser.add_argument('--device', choices=['cpu', 'cuda'], default='cpu', help='device type', metavar='DEVICE', type=str)
+    parser.add_argument('--device', choices=['cpu', 'cuda'], default='cpu', help='device type', metavar='DEVICE',
+                        type=str)
     parser.add_argument('--no-quantization', action='store_true', help='disable quantization')
     parser.add_argument('--no-optimization', action='store_true', help='disable optimization')
     parser.add_argument('--quantized-type', default='w8a8', help='quantized data type', metavar='DTYPE', type=str)
-    parser.add_argument('--target', choices=['rk3576', 'rk3588'], default='rk3588', help='target platform', metavar='PLATFORM', type=str)
+    parser.add_argument('--target', choices=['rk3576', 'rk3588'], default='rk3588', help='target platform',
+                        metavar='PLATFORM', type=str)
     parser.add_argument('repository', help='model huggingface repository', metavar='REPOSITORY', type=str)
     args = parser.parse_args()
 
@@ -70,13 +75,16 @@ def main():
             print('ERROR - Load model failed', file=stderr)
             exit(-1)
 
-        if not convertor.build_model(disable_quantization=args.no_quantization, disable_optimization=args.no_optimization, quantized_dtype=args.quantized_type, target_platform=args.target):
+        if not convertor.build_model(disable_quantization=args.no_quantization,
+                                     disable_optimization=args.no_optimization, quantized_dtype=args.quantized_type,
+                                     target_platform=args.target):
             print('ERROR - Build model failed', file=stderr)
             exit(-1)
 
         if not convertor.export_model(args.output):
             print('ERROR - Export model failed', file=stderr)
             exit(-1)
+
 
 if __name__ == '__main__':
     main()
