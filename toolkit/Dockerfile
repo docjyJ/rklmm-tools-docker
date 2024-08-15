@@ -6,3 +6,7 @@ COPY rkllm_toolkit.sh /rkllm_toolkit.sh
 
 RUN bash /rkllm_toolkit.sh && rm /rkllm_toolkit.sh
 
+COPY toolkit /bin/toolkit
+
+ENTRYPOINT ["/bin/toolkit"]
+
