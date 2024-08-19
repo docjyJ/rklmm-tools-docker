@@ -1,6 +1,3 @@
-#!/usr/local/bin/python3
-
-
 import subprocess
 from argparse import ArgumentParser
 from os.path import abspath
@@ -9,14 +6,14 @@ from sys import stderr
 from typing import Literal, Optional
 from uuid import uuid1
 
-from rkllm.api import RKLLM
+from RkllmToolkitCli.api import RKLLMBase
 
 
 class HuggingfaceConvertor:
     def __init__(self, repository: str):
         self._directory = f'/tmp/{uuid1()}'
         self._repository_url = f'https://huggingface.co/{repository}'
-        self._builder = RKLLM()
+        self._builder = RKLLMBase()
 
     def download_model(self) -> bool:
         return subprocess.run(['git', 'clone', self._repository_url, self._directory]).returncode == 0
